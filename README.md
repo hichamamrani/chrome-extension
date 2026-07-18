@@ -8,6 +8,7 @@ A monorepo of Chrome extensions (Manifest V3) built by [Algobots](https://algobo
 |-----------|--------|-------------|
 | **Quick QR** | [`quick-qr/`](quick-qr/) | Instantly generate a QR code for the current tab's URL |
 | **Clipboard Vault** | [`clipboard-vault/`](clipboard-vault/) | Automatically save and manage your last copied text snippets |
+| **Universal Share** | [`universal-share/`](universal-share/) | Native mobile-style Share Sheet for Chrome |
 
 Each extension folder is self-contained with its own manifest, source code, store assets, and publishing docs.
 
@@ -31,6 +32,12 @@ npm run generate:assets # quick-qr — generates screenshots
 
 See each extension's `PUBLISHING.md` and `STORE_LISTING.md` for Chrome Web Store submission.
 
+| Extension | ZIP location |
+|-----------|--------------|
+| Quick QR | Build manually (see `quick-qr/PUBLISHING.md`) |
+| Clipboard Vault | `clipboard-vault/release/clipboard-vault-v1.0.1.zip` |
+| Universal Share | `universal-share/release/universal-share-v1.0.0.zip` |
+
 ## Repository Structure
 
 ```
@@ -38,7 +45,8 @@ chrome-extension/
 ├── .gitignore
 ├── README.md
 ├── quick-qr/              # Quick QR extension
-└── clipboard-vault/       # Clipboard Vault extension
+├── clipboard-vault/       # Clipboard Vault extension
+└── universal-share/       # Universal Share extension
 ```
 
 ## Links

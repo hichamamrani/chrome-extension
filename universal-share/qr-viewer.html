@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code — Universal Share</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Inter, sans-serif;
+      background: linear-gradient(135deg, #eff6ff, #f8fafc);
+      color: #0f172a;
+      padding: 24px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+    }
+    h1 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+    p { font-size: 13px; color: #64748b; word-break: break-all; margin-bottom: 24px; line-height: 1.5; }
+    canvas { border-radius: 12px; max-width: 100%; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Scan QR Code</h1>
+    <p id="url-text"></p>
+    <canvas id="qr-canvas"></canvas>
+  </div>
+  <script src="lib/qrcode.bundle.js"></script>
+  <script src="share.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const text = params.get("text") || "";
+    document.getElementById("url-text").textContent = text;
+    if (text) generateQRToCanvas(document.getElementById("qr-canvas"), text, 280);
+  </script>
+</body>
+</html>

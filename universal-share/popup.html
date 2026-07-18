@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universal Share</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="sheet-overlay" id="sheetOverlay">
+    <div class="share-sheet" id="shareSheet">
+      <div class="sheet-handle"></div>
+
+      <header class="sheet-header">
+        <div class="page-preview">
+          <img id="favicon" class="favicon" src="icons/icon48.png" alt="" width="48" height="48">
+          <div class="page-info">
+            <h1 id="pageTitle" class="page-title">Loading…</h1>
+            <p id="pageUrl" class="page-url"></p>
+          </div>
+        </div>
+        <div id="selectionPreview" class="selection-preview hidden">
+          <span class="selection-label">Selected text</span>
+          <p id="selectionText"></p>
+        </div>
+      </header>
+
+      <div class="search-wrapper">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20L16.5 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input type="search" id="searchInput" placeholder="Search apps…" autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="quick-actions">
+        <button type="button" class="quick-btn" data-action="copy-url" title="Copy URL">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Copy URL
+        </button>
+        <button type="button" class="quick-btn" data-action="copy-title" title="Copy Title">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 7V4h16v3M9 20h6M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Copy Title
+        </button>
+        <button type="button" class="quick-btn" data-action="copy-markdown" title="Copy Markdown Link">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M14 10l-4 4M10 10l4 4M5 5l14 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Markdown
+        </button>
+        <button type="button" class="quick-btn" data-action="copy-html" title="Copy HTML Link">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          HTML
+        </button>
+        <button type="button" class="quick-btn" data-action="copy-selection" title="Copy Selection">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="8" y="8" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2"/><path d="M4 16V6a2 2 0 012-2h10" stroke="currentColor" stroke-width="2"/></svg>
+          Selection
+        </button>
+        <button type="button" class="quick-btn" data-action="copy-citation" title="Copy Citation">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+          Citation
+        </button>
+        <button type="button" class="quick-btn" data-action="shorten-url" title="Shorten URL">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Shorten
+        </button>
+        <button type="button" class="quick-btn" data-action="qr" title="QR Code">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="3" height="3" fill="currentColor"/></svg>
+          QR Code
+        </button>
+      </div>
+
+      <main class="sheet-body">
+        <section id="pinnedSection" class="share-section">
+          <h2 class="section-title">Pinned</h2>
+          <div id="pinnedGrid" class="share-grid"></div>
+        </section>
+
+        <section id="recentSection" class="share-section hidden">
+          <h2 class="section-title">Recently Used</h2>
+          <div id="recentGrid" class="share-grid"></div>
+        </section>
+
+        <section class="share-section">
+          <h2 class="section-title">All Apps</h2>
+          <div id="allGrid" class="share-grid"></div>
+        </section>
+
+        <p id="noResults" class="no-results hidden">No apps match your search</p>
+      </main>
+
+    <footer class="sheet-footer">
+      <button type="button" id="settingsBtn" class="footer-btn" title="Settings">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+      <span class="footer-hint">Ctrl+Shift+S</span>
+    </footer>
+
+    <footer class="footer-brand">
+      Made by
+      <a href="https://algobots.co.uk" target="_blank" rel="noopener noreferrer">Algobots</a>
+    </footer>
+  </div>
+  </div>
+
+  <div id="qrModal" class="qr-modal hidden">
+    <div class="qr-modal-content">
+      <button type="button" id="qrClose" class="qr-close" aria-label="Close">&times;</button>
+      <h3>QR Code</h3>
+      <canvas id="qrCanvas" width="200" height="200"></canvas>
+      <p id="qrUrl" class="qr-url"></p>
+      <button type="button" id="qrOpenTab" class="qr-open-btn">Open in New Tab</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="lib/qrcode.bundle.js"></script>
+  <script src="utils.js"></script>
+  <script src="share.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

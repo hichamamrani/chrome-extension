@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Universal Share Screenshot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 1280px; height: 800px; overflow: hidden; font-family: Inter, sans-serif; }
+
+    .scene {
+      width: 1280px; height: 800px; display: flex;
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 50%, #e0e7ff 100%);
+      position: relative;
+    }
+    .scene.dark { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); }
+
+    .browser {
+      flex: 1; margin: 48px 24px 48px 48px; background: #fff; border-radius: 12px;
+      box-shadow: 0 25px 60px rgba(15,23,42,0.18); overflow: hidden; display: flex; flex-direction: column;
+    }
+    .scene.dark .browser { background: #1e293b; box-shadow: 0 25px 60px rgba(0,0,0,0.45); }
+    .browser-bar { height: 44px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; padding: 0 16px; gap: 8px; }
+    .scene.dark .browser-bar { background: #0f172a; border-color: #334155; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ef4444; } .dot-y { background: #eab308; } .dot-g { background: #22c55e; }
+    .url-bar { flex: 1; margin-left: 12px; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 14px; font-size: 13px; color: #64748b; }
+    .scene.dark .url-bar { background: #1e293b; border-color: #334155; color: #94a3b8; }
+    .browser-body { flex: 1; padding: 40px; background: #f8fafc; }
+    .scene.dark .browser-body { background: #0f172a; }
+    .page-title { font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 12px; }
+    .scene.dark .page-title { color: #f1f5f9; }
+    .page-text { font-size: 15px; color: #64748b; line-height: 1.7; max-width: 480px; }
+    .scene.dark .page-text { color: #94a3b8; }
+
+    .side { width: 420px; margin: 48px 48px 48px 0; display: flex; align-items: flex-end; }
+    .sheet {
+      width: 100%; background: #fff; border-radius: 20px 20px 0 0;
+      box-shadow: 0 -8px 40px rgba(15,23,42,0.12); border: 1px solid #e2e8f0; border-bottom: none; overflow: hidden;
+    }
+    .scene.dark .sheet { background: #1e293b; border-color: #334155; box-shadow: 0 -8px 40px rgba(0,0,0,0.4); }
+    .handle { width: 36px; height: 4px; background: #e2e8f0; border-radius: 2px; margin: 10px auto 8px; }
+    .scene.dark .handle { background: #334155; }
+
+    .preview { display: flex; gap: 12px; padding: 0 16px 12px; align-items: flex-start; }
+    .fav { width: 48px; height: 48px; border-radius: 12px; background: #2563eb; border: 1px solid #e2e8f0; flex-shrink: 0; }
+    .scene.dark .fav { border-color: #334155; }
+    .preview h3 { font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 2px; }
+    .scene.dark .preview h3 { color: #f1f5f9; }
+    .preview p { font-size: 11px; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px; }
+
+    .search { margin: 0 16px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 9px 12px; font-size: 12px; color: #94a3b8; }
+    .scene.dark .search { background: #0f172a; border-color: #334155; color: #64748b; }
+
+    .quick { display: flex; gap: 6px; padding: 0 16px 12px; overflow: hidden; }
+    .pill { padding: 6px 10px; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 10px; color: #64748b; white-space: nowrap; background: #fff; }
+    .scene.dark .pill { background: #1e293b; border-color: #334155; color: #94a3b8; }
+
+    .section-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; padding: 0 16px 8px; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 0 16px 16px; }
+    .app { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 4px; background: #f8fafc; border-radius: 12px; }
+    .scene.dark .app { background: #0f172a; }
+    .app-icon { width: 40px; height: 40px; border-radius: 12px; }
+    .app span { font-size: 9px; color: #64748b; font-weight: 500; }
+    .scene.dark .app span { color: #94a3b8; }
+
+    .wa { background: #25D366; } .tg { background: #229ED9; } .tw { background: #000; }
+    .li { background: #0A66C2; } .em { background: #2563eb; } .cp { background: #64748b; }
+    .fb { background: #1877F2; } .qr { background: #2563eb; }
+
+    .brand-footer { text-align: center; font-size: 10px; color: #94a3b8; padding: 8px; border-top: 1px solid #e2e8f0; }
+    .scene.dark .brand-footer { border-color: #334155; }
+    .brand-footer a { color: #2563eb; font-weight: 600; text-decoration: none; }
+
+    .badge { position: absolute; top: 28px; left: 48px; background: rgba(37,99,235,0.12); color: #2563eb; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 20px; }
+    .scene.dark .badge { background: rgba(37,99,235,0.2); color: #93c5fd; }
+    .caption { position: absolute; bottom: 28px; left: 48px; font-size: 14px; font-weight: 600; color: #64748b; }
+  </style>
+</head>
+<body>
+  <div class="scene" id="scene">
+    <div class="badge">Universal Share for Chrome</div>
+
+    <div class="browser">
+      <div class="browser-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="url-bar">https://algobots.co.uk/tools/universal-share</div>
+      </div>
+      <div class="browser-body">
+        <div class="page-title">Share anything, instantly</div>
+        <p class="page-text">A native mobile-style Share Sheet for Chrome. Share the current page to WhatsApp, Telegram, X, LinkedIn, and more — with one click.</p>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="sheet">
+        <div class="handle"></div>
+        <div class="preview">
+          <div class="fav"></div>
+          <div>
+            <h3>Universal Share — Algobots</h3>
+            <p>https://algobots.co.uk/tools/universal-share</p>
+          </div>
+        </div>
+        <div class="search">Search apps…</div>
+        <div class="quick">
+          <div class="pill">Copy URL</div>
+          <div class="pill">Copy Title</div>
+          <div class="pill">Markdown</div>
+          <div class="pill">QR Code</div>
+        </div>
+        <div class="section-label">Pinned</div>
+        <div class="grid" id="grid">
+          <div class="app"><div class="app-icon wa"></div><span>WhatsApp</span></div>
+          <div class="app"><div class="app-icon tg"></div><span>Telegram</span></div>
+          <div class="app"><div class="app-icon tw"></div><span>X</span></div>
+          <div class="app"><div class="app-icon li"></div><span>LinkedIn</span></div>
+          <div class="app"><div class="app-icon em"></div><span>Email</span></div>
+          <div class="app"><div class="app-icon cp"></div><span>Copy Link</span></div>
+          <div class="app"><div class="app-icon fb"></div><span>Facebook</span></div>
+          <div class="app"><div class="app-icon qr"></div><span>QR Code</span></div>
+        </div>
+        <div class="brand-footer">Made by <a href="#">Algobots</a></div>
+      </div>
+    </div>
+
+    <div class="caption" id="caption">Share any page like on mobile</div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('theme') === 'dark') document.getElementById('scene').classList.add('dark');
+    if (params.get('caption')) document.getElementById('caption').textContent = decodeURIComponent(params.get('caption').replace(/\+/g, ' '));
+  </script>
+</body>
+</html>

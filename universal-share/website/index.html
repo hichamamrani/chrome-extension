@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universal Share — Free Chrome Extension | Algobots</title>
+  <meta name="description" content="Native mobile-style Share Sheet for Chrome. Share any page to WhatsApp, Telegram, X, LinkedIn, and more. Built by Algobots.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #2563eb; --primary-dark: #1d4ed8; --text: #1e293b; --muted: #64748b; --bg: #f8fafc; --card: #fff; --radius: 16px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Inter, sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 20px; font-weight: 800; color: var(--primary); text-decoration: none; }
+    .nav-link { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; }
+    .hero { padding: 64px 0 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    @media (max-width: 768px) { .hero { grid-template-columns: 1fr; } }
+    .badge { display: inline-block; background: rgba(37,99,235,0.1); color: var(--primary); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; margin-bottom: 16px; }
+    h1 { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .hero p { font-size: 17px; color: var(--muted); margin-bottom: 32px; max-width: 440px; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: #fff; font-size: 16px; font-weight: 600; padding: 14px 28px; border-radius: 12px; text-decoration: none; box-shadow: 0 8px 24px rgba(37,99,235,0.35); }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .mockup { background: var(--card); border-radius: 20px 20px 0 0; box-shadow: 0 24px 64px rgba(15,23,42,0.12); border: 1px solid #e2e8f0; overflow: hidden; max-width: 360px; margin: 0 auto; }
+    .mock-handle { width: 36px; height: 4px; background: #e2e8f0; border-radius: 2px; margin: 10px auto; }
+    .mock-preview { display: flex; gap: 10px; padding: 0 16px 12px; align-items: center; }
+    .mock-fav { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+    .mock-title { font-size: 13px; font-weight: 600; }
+    .mock-url { font-size: 11px; color: var(--muted); }
+    .mock-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; padding: 0 16px 16px; }
+    .mock-app { text-align: center; font-size: 9px; color: var(--muted); }
+    .mock-icon { width: 36px; height: 36px; border-radius: 10px; margin: 0 auto 4px; }
+    .features { padding: 40px 0 80px; }
+    .features h2 { font-size: 1.75rem; font-weight: 800; text-align: center; margin-bottom: 40px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+    .feature-card { background: var(--card); border: 1px solid #e2e8f0; border-radius: var(--radius); padding: 24px; }
+    .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--muted); }
+    footer { text-align: center; padding: 32px 0 48px; color: var(--muted); font-size: 14px; border-top: 1px solid #e2e8f0; }
+    footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <a href="https://algobots.co.uk" class="logo">Algobots</a>
+      <a href="https://algobots.co.uk/universal-share/privacy.html" class="nav-link">Privacy Policy</a>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <span class="badge">Free Chrome Extension</span>
+        <h1>Share anything, like on your phone</h1>
+        <p>Universal Share brings a native mobile-style Share Sheet to Chrome. One click to share any page to WhatsApp, Telegram, X, LinkedIn, and more.</p>
+        <a href="#" class="btn-primary" id="installBtn">Add to Chrome — Free</a>
+      </div>
+      <div class="mockup">
+        <div class="mock-handle"></div>
+        <div class="mock-preview">
+          <div class="mock-fav"></div>
+          <div><div class="mock-title">Example Page Title</div><div class="mock-url">https://example.com/article</div></div>
+        </div>
+        <div class="mock-grid">
+          <div class="mock-app"><div class="mock-icon" style="background:#25D366"></div>WhatsApp</div>
+          <div class="mock-app"><div class="mock-icon" style="background:#229ED9"></div>Telegram</div>
+          <div class="mock-app"><div class="mock-icon" style="background:#000"></div>X</div>
+          <div class="mock-app"><div class="mock-icon" style="background:#0A66C2"></div>LinkedIn</div>
+          <div class="mock-app"><div class="mock-icon" style="background:#2563eb"></div>Email</div>
+          <div class="mock-app"><div class="mock-icon" style="background:#64748b"></div>Copy</div>
+          <div class="mock-app"><div class="mock-icon" style="background:#1877F2"></div>Facebook</div>
+          <div class="mock-app"><div class="mock-icon" style="background:#2563eb"></div>QR</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <h2>Everything you need to share faster</h2>
+      <div class="feature-grid">
+        <div class="feature-card"><h3>📱 Native feel</h3><p>Bottom-sheet design inspired by Android and iOS share sheets.</p></div>
+        <div class="feature-card"><h3>⚡ 14+ platforms</h3><p>WhatsApp, Telegram, X, LinkedIn, Reddit, Pinterest, Email, SMS, and more.</p></div>
+        <div class="feature-card"><h3>📋 Smart copy</h3><p>Copy URL, title, Markdown, HTML, selection, or citation with one tap.</p></div>
+        <div class="feature-card"><h3>⭐ Pin favourites</h3><p>Keep your most-used apps at the top. Recently used section included.</p></div>
+        <div class="feature-card"><h3>🔒 Private</h3><p>Tab data read only when you open the popup. Nothing sent to servers.</p></div>
+        <div class="feature-card"><h3>⌨️ Ctrl+Shift+S</h3><p>Open the share sheet instantly from any webpage.</p></div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Universal Share is built by <a href="https://algobots.co.uk">Algobots</a> — booking systems, automation & growth for service businesses.</p>
+      <p style="margin-top:8px;">© 2026 Algobots. <a href="https://algobots.co.uk/universal-share/privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+</body>
+</html>

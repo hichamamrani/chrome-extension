@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universal Share — Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-icon">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke="currentColor" stroke-width="2"/></svg>
+      </div>
+      <div>
+        <h1>Settings</h1>
+        <p>Configure Universal Share preferences</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <h2>Theme</h2>
+      <div class="option-group" id="themeGroup">
+        <label class="option-row" data-value="light"><span>Light</span><input type="radio" name="theme" value="light"></label>
+        <label class="option-row" data-value="dark"><span>Dark</span><input type="radio" name="theme" value="dark"></label>
+        <label class="option-row" data-value="system"><span>System</span><input type="radio" name="theme" value="system"></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Default Share Apps</h2>
+      <p class="card-desc">Choose which apps appear pinned by default</p>
+      <div class="app-grid" id="defaultAppsGrid"></div>
+    </div>
+
+    <div class="card">
+      <h2>Recent Apps</h2>
+      <div class="toggle-row">
+        <div><span class="toggle-label">Enable recent apps</span><span class="toggle-desc">Show recently used share targets</span></div>
+        <label class="toggle"><input type="checkbox" id="recentEnabled"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="option-group" id="maxRecentGroup">
+        <label class="option-row" data-value="5"><span>5 apps</span><input type="radio" name="maxRecent" value="5"></label>
+        <label class="option-row" data-value="10"><span>10 apps</span><input type="radio" name="maxRecent" value="10"></label>
+        <label class="option-row" data-value="20"><span>20 apps</span><input type="radio" name="maxRecent" value="20"></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Features</h2>
+      <div class="toggle-row">
+        <div><span class="toggle-label">Notifications</span><span class="toggle-desc">Show notifications after sharing</span></div>
+        <label class="toggle"><input type="checkbox" id="notifications"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div><span class="toggle-label">Clipboard history</span><span class="toggle-desc">Save copied items locally</span></div>
+        <label class="toggle"><input type="checkbox" id="clipboardHistory"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div><span class="toggle-label">QR generation</span><span class="toggle-desc">Enable QR code sharing</span></div>
+        <label class="toggle"><input type="checkbox" id="qrEnabled"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <p id="saveStatus" class="save-status">Settings saved</p>
+    <p class="footer-note">
+      Universal Share is built by
+      <a href="https://algobots.co.uk" target="_blank" rel="noopener noreferrer">Algobots</a>
+    </p>
+  </div>
+
+  <script src="utils.js"></script>
+  <script src="share.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
