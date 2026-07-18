@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build / release packages
+*.zip
+**/release/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Puppeteer browser cache (if downloaded locally)
+.cache/
+.local-chromium/

@@ -1,0 +1,18 @@
+{
+  "name": "quick-qr",
+  "version": "1.0.0",
+  "description": "A lightweight Chrome Extension (Manifest V3) that instantly generates a QR code for the current tab's URL.",
+  "main": "background.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "generate:assets": "node store-assets/generate-screenshots.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^24.43.1"
+  }
+}

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quick QR Screenshot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 1280px; height: 800px; overflow: hidden; font-family: Inter, sans-serif; }
+
+    .scene {
+      width: 1280px;
+      height: 800px;
+      display: flex;
+      background: linear-gradient(135deg, #eef2ff 0%, #e2e8f0 50%, #f8fafc 100%);
+      position: relative;
+    }
+    .scene.dark {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    }
+
+    /* Fake browser window */
+    .browser {
+      flex: 1;
+      margin: 48px 32px 48px 48px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .scene.dark .browser {
+      background: #1e293b;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    }
+    .browser-bar {
+      height: 44px;
+      background: #f1f5f9;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 8px;
+    }
+    .scene.dark .browser-bar { background: #0f172a; border-color: #334155; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ef4444; }
+    .dot-y { background: #eab308; }
+    .dot-g { background: #22c55e; }
+    .url-bar {
+      flex: 1;
+      margin-left: 12px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .scene.dark .url-bar { background: #1e293b; border-color: #475569; color: #94a3b8; }
+    .browser-content {
+      flex: 1;
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .scene.dark .browser-content { color: #f1f5f9; }
+    .site-logo { font-size: 28px; font-weight: 700; color: #2563eb; }
+    .site-h1 { font-size: 36px; font-weight: 700; line-height: 1.2; max-width: 520px; }
+    .site-p { font-size: 16px; color: #64748b; max-width: 480px; line-height: 1.6; }
+    .scene.dark .site-p { color: #94a3b8; }
+
+    /* Extension popup panel */
+    .popup-panel {
+      width: 400px;
+      margin: 32px 48px 32px 0;
+      align-self: center;
+      flex-shrink: 0;
+    }
+    .popup-shell {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(37, 99, 235, 0.25), 0 0 0 1px rgba(255,255,255,0.1);
+      transform: scale(1.05);
+      transform-origin: center center;
+    }
+    .scene.dark .popup-shell {
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    /* Popup internals — mirrors popup.css */
+    :root {
+      --primary: #2563eb;
+      --primary-light: rgba(37, 99, 235, 0.12);
+      --bg-gradient-start: #f0f4ff;
+      --bg-gradient-end: #e8edf5;
+      --surface: rgba(255, 255, 255, 0.72);
+      --border: rgba(255, 255, 255, 0.6);
+      --shadow-sm: 0 2px 8px rgba(31, 38, 135, 0.08);
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --radius: 14px;
+      --radius-sm: 10px;
+    }
+    .popup-inner {
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+    .popup-inner.dark-theme {
+      --bg-gradient-start: #0f172a;
+      --bg-gradient-end: #1e293b;
+      --surface: rgba(30, 41, 59, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+    }
+    .header { display: flex; align-items: center; justify-content: space-between; }
+    .header-brand { display: flex; align-items: center; gap: 10px; }
+    .brand-icon {
+      width: 34px; height: 34px; background: var(--primary); color: #fff;
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+    .brand-title { font-size: 17px; font-weight: 700; }
+    .theme-btn {
+      width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 10px;
+      background: var(--surface); display: flex; align-items: center; justify-content: center;
+      color: var(--text-secondary);
+    }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: var(--shadow-sm);
+    }
+    .page-info { padding: 14px; }
+    .page-meta { display: flex; align-items: center; gap: 12px; }
+    .favicon { width: 32px; height: 32px; border-radius: 8px; background: #2563eb; }
+    .page-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .page-url { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+    .qr-card { padding: 20px; display: flex; justify-content: center; }
+    .qr-card canvas { border-radius: 8px; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .action-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px;
+      background: var(--surface); font-size: 12px; font-weight: 500; color: var(--text-primary);
+    }
+    .action-btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .options-card { overflow: hidden; }
+    .options-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; padding: 12px 14px; font-weight: 600; color: var(--text-primary);
+    }
+    .options-panel { padding: 0 14px 14px; }
+    .options-panel.hidden { display: none; }
+    .option-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 0; border-top: 1px solid var(--border); font-size: 12px;
+    }
+    .option-row label { color: var(--text-secondary); font-weight: 500; }
+    .option-value { font-size: 11px; font-weight: 600; color: var(--primary); }
+    .footer-brand { text-align: center; font-size: 11px; color: var(--text-muted); padding: 4px 0; }
+    .footer-brand a { color: var(--primary); font-weight: 600; text-decoration: none; }
+
+    .caption {
+      position: absolute;
+      bottom: 20px;
+      left: 48px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #475569;
+      background: rgba(255,255,255,0.85);
+      padding: 8px 16px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+    }
+    .scene.dark .caption { color: #e2e8f0; background: rgba(15,23,42,0.85); }
+
+    .badge {
+      position: absolute;
+      top: 24px;
+      right: 48px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" id="scene">
+    <div class="browser">
+      <div class="browser-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <div class="url-bar">https://algobots.co.uk/tools/quick-qr</div>
+      </div>
+      <div class="browser-content">
+        <div class="site-logo">Algobots</div>
+        <h1 class="site-h1">Share any webpage as a QR code instantly</h1>
+        <p class="site-p">Quick QR generates a scannable code for the page you're viewing — perfect for sharing links, presentations, and print materials.</p>
+      </div>
+    </div>
+
+    <div class="popup-panel">
+      <div class="popup-shell">
+        <div class="popup-inner" id="popupInner">
+          <header class="header">
+            <div class="header-brand">
+              <div class="brand-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/></svg>
+              </div>
+              <span class="brand-title">Quick QR</span>
+            </div>
+            <div class="theme-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            </div>
+          </header>
+
+          <section class="card page-info">
+            <div class="page-meta">
+              <img class="favicon" src="https://www.google.com/s2/favicons?domain=algobots.co.uk&sz=64" width="32" height="32" alt="">
+              <div>
+                <div class="page-title">Quick QR — Algobots</div>
+                <div class="page-url">https://algobots.co.uk/tools/quick-qr</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card qr-card">
+            <canvas id="qrCanvas" width="256" height="256"></canvas>
+          </section>
+
+          <section class="actions">
+            <div class="action-btn primary">Copy URL</div>
+            <div class="action-btn">Download</div>
+            <div class="action-btn">Open Site</div>
+            <div class="action-btn">Refresh</div>
+          </section>
+
+          <section class="card options-card">
+            <div class="options-toggle">
+              <span>⚙ Options</span>
+              <span>▾</span>
+            </div>
+            <div class="options-panel" id="optionsPanel">
+              <div class="option-row"><label>QR Size</label><span class="option-value">256px</span></div>
+              <div class="option-row"><label>Margin</label><span class="option-value">2</span></div>
+              <div class="option-row"><label>Foreground</label><span class="option-value">#000000</span></div>
+              <div class="option-row"><label>Background</label><span class="option-value">#ffffff</span></div>
+            </div>
+          </section>
+
+          <footer class="footer-brand">Made by <a href="#">Algobots</a></footer>
+        </div>
+      </div>
+    </div>
+
+    <div class="badge">Quick QR for Chrome</div>
+    <div class="caption" id="caption">Instant QR codes for any webpage</div>
+  </div>
+
+  <script src="../lib/qrcode.bundle.js"></script>
+  <script>
+    // URL params: ?theme=dark&options=open&caption=Custom+caption
+    const params = new URLSearchParams(location.search);
+    const theme = params.get('theme') || 'light';
+    const optionsOpen = params.get('options') === 'open';
+    const caption = params.get('caption') || 'Instant QR codes for any webpage';
+
+    if (theme === 'dark') {
+      document.getElementById('scene').classList.add('dark');
+      document.getElementById('popupInner').classList.add('dark-theme');
+    }
+    if (!optionsOpen) {
+      document.getElementById('optionsPanel').classList.add('hidden');
+    }
+    document.getElementById('caption').textContent = caption;
+
+    QRCodeLib.toCanvas(document.getElementById('qrCanvas'), 'https://algobots.co.uk/tools/quick-qr', {
+      errorCorrectionLevel: 'H',
+      margin: 2,
+      width: 256,
+      color: { dark: theme === 'dark' ? '#ffffff' : '#000000', light: theme === 'dark' ? '#1e293b' : '#ffffff' }
+    });
+  </script>
+</body>
+</html>

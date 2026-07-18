@@ -1,0 +1,15 @@
+{
+  "name": "clipboard-vault",
+  "version": "1.0.1",
+  "description": "Automatically save and manage your last copied text snippets in Chrome.",
+  "author": "Algobots",
+  "license": "MIT",
+  "scripts": {
+    "generate:assets": "node store-assets/generate-screenshots.mjs",
+    "package": "node scripts/package-extension.mjs",
+    "prepare:store": "npm run generate:assets && npm run package"
+  },
+  "dependencies": {
+    "puppeteer": "^24.43.1"
+  }
+}

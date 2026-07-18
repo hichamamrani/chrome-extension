@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clipboard Vault — Free Chrome Extension | Algobots</title>
+  <meta name="description" content="Automatically save your last copied text snippets in Chrome. Search, pin favourites, and export — all stored locally. Built by Algobots.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --text: #1e293b;
+      --muted: #64748b;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    nav {
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 20px; font-weight: 800; color: var(--primary); text-decoration: none; }
+    .nav-link { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; }
+    .nav-link:hover { color: var(--primary); }
+
+    .hero {
+      padding: 64px 0 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .hero { grid-template-columns: 1fr; } }
+
+    .badge {
+      display: inline-block;
+      background: rgba(37,99,235,0.1);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .hero p { font-size: 17px; color: var(--muted); margin-bottom: 32px; max-width: 440px; }
+    .cta-group { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(37,99,235,0.35);
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-secondary {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .btn-secondary:hover { color: var(--primary); }
+
+    .mockup {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 24px 64px rgba(15,23,42,0.12);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .mockup-header {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 14px 16px;
+    }
+    .mockup-title { font-size: 15px; font-weight: 700; color: var(--text); }
+    .mockup-search {
+      margin-top: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .mockup-body { padding: 12px 16px 16px; background: #f8fafc; }
+    .mockup-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.06);
+    }
+    .mockup-card.pinned { border-left: 3px solid var(--primary); }
+    .mockup-text { font-size: 12px; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+    .mockup-meta { font-size: 10px; color: var(--muted); }
+    .mockup-tag {
+      display: inline-block;
+      background: rgba(37,99,235,0.1);
+      color: var(--primary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-right: 6px;
+    }
+
+    .features { padding: 40px 0 80px; }
+    .features h2 { font-size: 1.75rem; font-weight: 800; text-align: center; margin-bottom: 40px; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--muted); }
+
+    .privacy {
+      background: var(--card);
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 64px;
+      text-align: center;
+    }
+    .privacy h2 { font-size: 1.25rem; margin-bottom: 12px; }
+    .privacy p { color: var(--muted); font-size: 15px; }
+
+    footer {
+      text-align: center;
+      padding: 32px 0 48px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid #e2e8f0;
+    }
+    footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <nav>
+      <a href="https://algobots.co.uk" class="logo">Algobots</a>
+      <a href="https://algobots.co.uk/clipboard-vault/privacy.html" class="nav-link">Privacy Policy</a>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <span class="badge">Free Chrome Extension</span>
+        <h1>Never lose a copied snippet again</h1>
+        <p>
+          Clipboard Vault automatically saves text you copy in Chrome.
+          Search your history, pin favourites, and export — all stored locally on your device.
+        </p>
+        <div class="cta-group">
+          <!-- Replace # with your Chrome Web Store URL after approval -->
+          <a href="#" class="btn-primary" id="installBtn">
+            Add to Chrome — Free
+          </a>
+          <a href="https://algobots.co.uk/clipboard-vault/privacy.html" class="btn-secondary">Privacy policy →</a>
+        </div>
+      </div>
+
+      <div class="mockup">
+        <div class="mockup-header">
+          <div class="mockup-title">📋 Clipboard Vault</div>
+          <div class="mockup-search">Search clipboard history…</div>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-card pinned">
+            <div class="mockup-text">npm install @cursor/sdk</div>
+            <div class="mockup-meta"><span class="mockup-tag">22 chars</span> Pinned · Just now</div>
+          </div>
+          <div class="mockup-card">
+            <div class="mockup-text">Meeting notes: launch checklist for Q3…</div>
+            <div class="mockup-meta"><span class="mockup-tag">48 chars</span> 5 mins ago</div>
+          </div>
+          <div class="mockup-card">
+            <div class="mockup-text">https://algobots.co.uk/tools/clipboard-vault</div>
+            <div class="mockup-meta"><span class="mockup-tag">46 chars</span> 1 hour ago</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <h2>Everything you need in a clipboard manager</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>⚡ Automatic capture</h3>
+          <p>Copy text anywhere in Chrome and it's saved instantly — no extra steps required.</p>
+        </div>
+        <div class="feature-card">
+          <h3>⭐ Pin favourites</h3>
+          <p>Keep important snippets at the top. Pinned items are never trimmed from your history.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🔍 Search & export</h3>
+          <p>Find any snippet in seconds. Export your full history as JSON for backup or migration.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🔒 100% local</h3>
+          <p>No account, no cloud, no tracking. Everything stays on your device using Chrome storage.</p>
+        </div>
+        <div class="feature-card">
+          <h3>⌨️ Keyboard shortcut</h3>
+          <p>Open Clipboard Vault instantly with Ctrl+Shift+V (Cmd+Shift+V on Mac).</p>
+        </div>
+        <div class="feature-card">
+          <h3>🌙 Dark mode</h3>
+          <p>Light, dark, or system theme — with a modern UI, smooth animations, and rounded cards.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="privacy">
+      <h2>Privacy first</h2>
+      <p>Clipboard Vault reads copied text only when you copy on a webpage. Nothing is transmitted to Algobots or any third party.</p>
+      <p style="margin-top:12px;"><a href="https://algobots.co.uk/clipboard-vault/privacy.html">Read our privacy policy →</a></p>
+    </section>
+
+    <footer>
+      <p>Clipboard Vault is built by <a href="https://algobots.co.uk">Algobots</a> — booking systems, automation & growth for service businesses.</p>
+      <p style="margin-top:8px;">© 2026 Algobots. <a href="https://algobots.co.uk/clipboard-vault/privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+
+</body>
+</html>

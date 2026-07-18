@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick QR — Free Chrome Extension | Algobots</title>
+  <meta name="description" content="Instantly generate a QR code for any webpage you're viewing in Chrome. Free, fast, and customizable. Built by Algobots.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --text: #1e293b;
+      --muted: #64748b;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* Nav */
+    nav {
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 20px; font-weight: 800; color: var(--primary); text-decoration: none; }
+    .nav-link { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; }
+    .nav-link:hover { color: var(--primary); }
+
+    /* Hero */
+    .hero {
+      padding: 64px 0 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .hero { grid-template-columns: 1fr; } }
+    .badge {
+      display: inline-block;
+      background: rgba(37,99,235,0.1);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .hero p { font-size: 17px; color: var(--muted); margin-bottom: 32px; max-width: 440px; }
+    .cta-group { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(37,99,235,0.35);
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-secondary {
+      color: var(--muted);
+      font-size: 14px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .btn-secondary:hover { color: var(--primary); }
+    .hero-img {
+      border-radius: var(--radius);
+      box-shadow: 0 30px 80px rgba(15,23,42,0.15);
+      width: 100%;
+    }
+
+    /* Features */
+    .features { padding: 64px 0; }
+    .features h2 { text-align: center; font-size: 28px; font-weight: 700; margin-bottom: 40px; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--muted); }
+
+    /* Screenshots */
+    .screenshots { padding: 64px 0; text-align: center; }
+    .screenshots h2 { font-size: 28px; font-weight: 700; margin-bottom: 32px; }
+    .screenshot-row {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .screenshot-row img {
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(15,23,42,0.12);
+      height: 220px;
+      flex-shrink: 0;
+    }
+
+    /* Privacy strip */
+    .privacy-strip {
+      background: var(--card);
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius);
+      padding: 32px;
+      margin: 32px 0 64px;
+      text-align: center;
+    }
+    .privacy-strip h3 { font-size: 18px; margin-bottom: 8px; }
+    .privacy-strip p { color: var(--muted); font-size: 14px; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid #e2e8f0;
+      padding: 32px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    footer a { color: var(--primary); text-decoration: none; font-weight: 500; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <nav>
+      <a href="https://algobots.co.uk" class="logo">Algobots</a>
+      <a href="https://algobots.co.uk/privacy/quick-qr" class="nav-link">Privacy Policy</a>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <span class="badge">Free Chrome Extension</span>
+        <h1>Turn any webpage into a QR code instantly</h1>
+        <p>Quick QR generates a scannable code for whatever page you're viewing — perfect for sharing links, presentations, and print materials.</p>
+        <div class="cta-group">
+          <a class="btn-primary" id="installBtn" href="https://chromewebstore.google.com/detail/quick-qr/coaleedekcefgidcagialepfiaeppapij">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" x2="12" y1="8" y2="8"/><line x1="3.95" x2="8.54" y1="6.06" y2="14"/><line x1="10.88" x2="15.46" y1="21.94" y2="14"/></svg>
+            Add to Chrome — It's Free
+          </a>
+          <a class="btn-secondary" href="#features">See features ↓</a>
+        </div>
+      </div>
+      <div>
+        <img class="hero-img" src="assets/screenshot-1-main.png" alt="Quick QR extension popup showing a QR code">
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <h2>Everything you need</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>⚡ Instant generation</h3>
+          <p>Open the popup and your QR code is ready. No setup, no sign-up.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🎨 Fully customizable</h3>
+          <p>Change size, margin, foreground and background colors with live preview.</p>
+        </div>
+        <div class="feature-card">
+          <h3>📥 High-quality download</h3>
+          <p>Export a 4× resolution PNG — crisp enough for print and presentations.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🌙 Light & dark mode</h3>
+          <p>Matches your preference with a beautiful glassmorphism interface.</p>
+        </div>
+        <div class="feature-card">
+          <h3>⌨️ Keyboard shortcut</h3>
+          <p>Press Ctrl+Shift+Q (Cmd+Shift+Q on Mac) to open Quick QR instantly.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🔒 Privacy first</h3>
+          <p>Works entirely on your device. No data sent to external servers.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="screenshots">
+      <h2>See it in action</h2>
+      <div class="screenshot-row">
+        <img src="assets/screenshot-1-main.png" alt="Quick QR light mode">
+        <img src="assets/screenshot-2-dark-mode.png" alt="Quick QR dark mode">
+        <img src="assets/screenshot-3-options.png" alt="Quick QR options panel">
+      </div>
+    </section>
+
+    <div class="privacy-strip">
+      <h3>Your data stays on your device</h3>
+      <p>Quick QR reads the active tab URL only when you open the popup. Nothing is transmitted to Algobots or any third party.</p>
+      <p style="margin-top:12px;"><a href="https://algobots.co.uk/privacy/quick-qr">Read our privacy policy →</a></p>
+    </div>
+  </div>
+
+  <footer>
+    <p>Quick QR is built by <a href="https://algobots.co.uk">Algobots</a> — booking systems, automation & growth for service businesses.</p>
+    <p style="margin-top:8px;">© 2026 Algobots. <a href="https://algobots.co.uk/privacy/quick-qr">Privacy</a></p>
+  </footer>
+
+</body>
+</html>
